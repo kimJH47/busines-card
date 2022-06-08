@@ -23,6 +23,7 @@ public class BusinessCard extends BaseTimeEntity {
     private String role;
     private String company;
     private String email;
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

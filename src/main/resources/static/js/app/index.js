@@ -22,12 +22,12 @@ const main = {
 
         $.ajax({
             type: 'POST',
-            url: '/api/v1/posts',
+            url: '/api/business-card',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            alert('글이 등록되었습니다.');
+            alert('명함이 등록되었습니다.');
             window.location.href = '/';
         }).fail(function (error) {
             alert(JSON.stringify(error));
@@ -43,12 +43,12 @@ const main = {
 
         $.ajax({
             type: 'PUT',
-            url: '/api/v1/posts/' + id,
+            url: '/api/business-card/' + id,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            alert('글이 수정되었습니다.');
+            alert('명함이 수정되었습니다.');
             window.location.href = '/';
         }).fail(function (error) {
             alert(JSON.stringify(error));
@@ -59,11 +59,11 @@ const main = {
 
         $.ajax({
             type: 'DELETE',
-            url: '/api/v1/posts/' + id,
+            url: '/api/business-card/' + id,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8'
         }).done(function () {
-            alert('글이 삭제되었습니다.');
+            alert('명함이 삭제되었습니다.');
             window.location.href = '/';
         }).fail(function (error) {
             alert(JSON.stringify(error));

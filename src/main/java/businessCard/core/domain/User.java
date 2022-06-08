@@ -1,12 +1,15 @@
 package businessCard.core.domain;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import lombok.*;
+
+import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
+@Getter
 public class User extends BaseTimeEntity{
 
     @Id
@@ -15,5 +18,18 @@ public class User extends BaseTimeEntity{
     private Long id;
     private String email;
     private String name;
+    private String picture;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public String getRoleKey() {
+        return role.getKey();
+    }
+
+    public User update(String name, String picture) {
+        this.name = name;
+        this.picture = picture;
+        return this;
+    }
 }

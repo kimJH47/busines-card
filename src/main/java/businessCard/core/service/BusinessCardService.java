@@ -20,17 +20,17 @@ public class BusinessCardService {
 
 
     @Transactional
-    public void save(Long userId,BusinessCardSaveDto businessCardSaveDto) {
-        User user = userRepository.findById(userId)
+    public Long save(BusinessCardSaveDto businessCardSaveDto) {
+        User user = userRepository.findById(businessCardSaveDto.getUserId())
                                   .orElseThrow(() -> new IllegalArgumentException("테이블에 유저가 존재하지 않습니다"));
         BusinessCard businessCard = businessCardSaveDto.toEntity();
         businessCard.changeUser(user);
-        businessCardRepository.save(businessCard);
+        return businessCardRepository.save(businessCard).getId();
 
     }
 
     @Transactional
-    public void update(BusinessCardUpdateDto updateDto) {
+    public void update(Long id, BusinessCardUpdateDto updateDto) {
 
         BusinessCard businessCard = businessCardRepository.findById(updateDto.getId())
                                                            .orElseThrow(() -> new IllegalArgumentException("테이블에 명함이 없습니다"));
