@@ -44,4 +44,9 @@ public class BusinessCardService {
         businessCardRepository.delete(businessCard);
 
     }
+
+    public Object findAllDesc() {
+        return null;
+
+    }
 }

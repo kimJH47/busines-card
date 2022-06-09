@@ -15,9 +15,11 @@ const main = {
     },
     save: function () {
         const data = {
-            title: $('#title').val(),
-            author: $('#author').val(),
-            content: $('#content').val()
+            company: $('#company').val(),
+            name: $('#name').val(),
+            tell: $('#tell').val(),
+            role: $('#role').val(),
+            email: $('#email').val()
         };
 
         $.ajax({

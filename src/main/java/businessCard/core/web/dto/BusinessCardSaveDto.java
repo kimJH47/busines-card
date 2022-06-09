@@ -18,10 +18,10 @@ public class BusinessCardSaveDto {
 
     @NotNull
     private Long userId;
+    private String company;
     private String name;
     private String tell;
-    private String Role;
-    private String company;
+    private String role;
     private String email;
 
     @JsonSerialize(using = ToStringSerializer.class)
