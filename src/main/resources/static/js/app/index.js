@@ -12,9 +12,13 @@ const main = {
         $('#btn-delete').on('click', function () {
             _this.delete();
         });
+
     },
     save: function () {
+        const userId = $(userId);
+        console.log(userId);
         const data = {
+            userId: userId,
             company: $('#company').val(),
             name: $('#name').val(),
             tell: $('#tell').val(),

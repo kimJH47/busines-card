@@ -3,7 +3,7 @@ package businessCard.core.config.oauth;
 import businessCard.core.config.oauth.dto.OAuthAttributes;
 import businessCard.core.config.oauth.dto.SessionUser;
 import businessCard.core.domain.User;
-import businessCard.core.domain.UserRepository;
+import businessCard.core.respository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -60,7 +60,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         /**
          * 세션에 사용자 정보를 저장하기위한 Dto 클래스
          */
-        httpSession.setAttribute("user", new SessionUser(user));
+        SessionUser sessionUser = new SessionUser(user);
+        httpSession.setAttribute("user", sessionUser);
+        httpSession.setAttribute("userId", user.getId());
 
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
                 attributes.getAttributes(),

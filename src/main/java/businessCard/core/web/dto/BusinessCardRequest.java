@@ -8,14 +8,16 @@ import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Builder
 @AllArgsConstructor
-public class BusinessCardSaveDto {
+public class BusinessCardRequest {
 
+    private Long id;
     @NotNull
     private Long userId;
     private String company;
@@ -23,15 +25,9 @@ public class BusinessCardSaveDto {
     private String tell;
     private String role;
     private String email;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private LocalDateTime uploadTime;
+    private String image;
 
 
-    public BusinessCard toEntity() {
-        return BusinessCard.builder()
-                           .company(this.getCompany())
-                           .email(this.getEmail())
-                           .name(this.getName())
-                           .role(this.getRole())
-                           .tell(this.getTell())
-                           .build();
-    }
 }

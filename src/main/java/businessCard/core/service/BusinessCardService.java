@@ -1,15 +1,19 @@
 package businessCard.core.service;
 
 
-import businessCard.core.domain.BusinessCard;
-import businessCard.core.domain.BusinessCardRepository;
-import businessCard.core.domain.User;
-import businessCard.core.domain.UserRepository;
+import businessCard.core.domain.*;
+import businessCard.core.respository.BusinessCardRepository;
+import businessCard.core.respository.BusinessCardSearch;
+import businessCard.core.respository.UserRepository;
+import businessCard.core.web.dto.BusinessCardRequest;
 import businessCard.core.web.dto.BusinessCardSaveDto;
 import businessCard.core.web.dto.BusinessCardUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -45,8 +49,32 @@ public class BusinessCardService {
 
     }
 
-    public Object findAllDesc() {
-        return null;
+    public List<BusinessCardRequest> findAllDesc() {
+        List<BusinessCard> cards = businessCardRepository.findAll();
+        return cards.stream()
+                    .map(businessCard -> BusinessCardRequest.builder()
+                                                            .company(businessCard.getCompany())
+                                                            .name(businessCard.getName())
+                                                            .role(businessCard.getRole())
+                                                            .tell(businessCard.getTell())
+                                                            .email(businessCard.getEmail())
+                                                            .image(businessCard.getImage())
+                                                            .uploadTime(businessCard.getModifiedTime())
+                                                            .build())
+                    .collect(Collectors.toList());
+
 
     }
+
+
+    public List<BusinessCardRequest> findBusinessCards(BusinessCardSearch businessCardSearch) {
+        String content = businessCardSearch.getContent();
+        String teg = businessCardSearch.getTeg();
+        //QueryDSL
+
+        return null;
+    }
+
+
 }
+

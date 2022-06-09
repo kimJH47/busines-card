@@ -20,7 +20,5 @@ public class BusinessCardUpdateDto {
     private String company;
     private String email;
 
-    @JsonSerialize(using = ToStringSerializer.class)
-    private LocalDateTime uploadTime;
 
 }

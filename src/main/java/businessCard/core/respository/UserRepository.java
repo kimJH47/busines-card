@@ -1,5 +1,6 @@
-package businessCard.core.domain;
+package businessCard.core.respository;
 
+import businessCard.core.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

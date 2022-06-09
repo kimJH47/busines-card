@@ -39,5 +39,6 @@ public class BusinessCard extends BaseTimeEntity {
         this.role = businessCardUpdateDto.getRole();
         this.company = businessCardUpdateDto.getCompany();
         this.email = businessCardUpdateDto.getEmail();
+
     }
 }
