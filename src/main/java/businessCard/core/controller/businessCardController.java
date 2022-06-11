@@ -6,11 +6,11 @@ import businessCard.core.service.BusinessCardService;
 import businessCard.core.web.dto.BusinessCardRequest;
 import businessCard.core.web.dto.BusinessCardSaveDto;
 import businessCard.core.web.dto.BusinessCardUpdateDto;
+import businessCard.core.web.dto.RegisteredDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.spring5.webflow.view.AjaxThymeleafViewResolver;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -48,4 +48,11 @@ public class businessCardController {
         }
         return ResponseEntity.ok().body(businessCards);
     }
+
+    @PostMapping("/api/business-card/register")
+    public ResponseEntity<?> registeredCards(@RequestBody RegisteredDto regestedDto) {
+        businessCardService.registered(regestedDto);
+        return null;
+    }
+
 }

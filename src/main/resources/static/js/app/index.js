@@ -22,7 +22,10 @@ const main = {
 
     },
     registry: function (){
-
+        var search = $("#result input[type=checkbox]:checked").map(function(){
+            return $(this).parent().id;
+        }).toArray();
+        console.log(search);
     },
     find: function () {
         var type = $('#search option:selected').val();
@@ -73,8 +76,9 @@ const main = {
             $("tr:has(td)").remove();
             $.each(tblresult, function (i) {
                 str += "<TR>"
-                str += '<TD id="id">' + tblresult[i].id + '</TD><TD id="company">' + tblresult[i].company + '</TD><TD id="name">' + tblresult[i].name + '</TD><TD id="role">' +tblresult[i].role + '</TD><TD id="tel">'
-                +tblresult[i].tel + '</TD><TD id="email">' +tblresult[i].email + '</TD>' + tblresult[i].upload + '</TD><TD>'
+                str += '<TD id="ch"><input id="checkBox" type="checkbox" /></TD>'+'<TD id="company">' + tblresult[i].id + '</TD>'+'<TD id="company">' + tblresult[i].company + '</TD><TD id="name">' + tblresult[i].name + '</TD><TD id="role">' +tblresult[i].role + '</TD><TD id="tel">'
+                +tblresult[i].tel + '</TD><TD id="email">' +tblresult[i].email+ '</TD>'
+
                 str += '</TR>'
             });
             $("#result").append(str);

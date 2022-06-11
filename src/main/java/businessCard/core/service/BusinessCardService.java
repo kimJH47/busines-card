@@ -6,11 +6,13 @@ import businessCard.core.respository.*;
 import businessCard.core.web.dto.BusinessCardRequest;
 import businessCard.core.web.dto.BusinessCardSaveDto;
 import businessCard.core.web.dto.BusinessCardUpdateDto;
+import businessCard.core.web.dto.RegisteredDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -20,16 +22,22 @@ public class BusinessCardService {
     private final UserRepository userRepository;
     private final BusinessCardRepository businessCardRepository;
     private final CustomBusinessCardRepositoryImpl customBusinessCardRepository;
-
+    private final UserCardInfoRepository userCardInfoRepository;
 
     @Transactional
     public Long save(BusinessCardSaveDto businessCardSaveDto, Long userId) {
+
         User user = userRepository.findById(userId)
                                   .orElseThrow(() -> new IllegalArgumentException("테이블에 유저가 존재하지 않습니다"));
         BusinessCard businessCard = businessCardSaveDto.toEntity();
         businessCard.changeUser(user);
-        return businessCardRepository.save(businessCard)
-                                     .getId();
+        BusinessCard card = businessCardRepository.save(businessCard);
+
+        //유저가 가지는 카드정보들에 바로 추가
+        return userCardInfoRepository.save(UserCardInfo.builder()
+                                                       .businessCard(card)
+                                                       .user(user)
+                                                       .build()).getId();
 
     }
 
@@ -70,16 +78,18 @@ public class BusinessCardService {
     }
     @Transactional(readOnly = true)
     public List<BusinessCardRequest> findByUserIdAllDesc(Long id) {
-
         User user = userRepository.findById(id)
                                   .orElseThrow(() -> new IllegalArgumentException("유저가 테이블에 존재하지 않습니다"));
-        List<BusinessCard> cards = businessCardRepository.findByUser(user);
-        return cards.stream()
-                    .map(BusinessCardRequest::new)
-                    .collect(Collectors.toList());
+        List<UserCardInfo> finds = userCardInfoRepository.findByUser(user);
+        List<BusinessCardRequest> cardRequests = finds.stream()
+                                                 .map(
+                                                         userCardInfo -> new BusinessCardRequest(userCardInfo.getBusinessCard())
+                                                 )
+                                                 .collect(Collectors.toList());
+
+        return cardRequests;
 
     }
-
     @Transactional(readOnly = true)
     public List<BusinessCardRequest> findBusinessCards(BusinessCardSearch businessCardSearch) {
 
@@ -104,5 +114,24 @@ public class BusinessCardService {
                                                              .orElseThrow(() -> new IllegalArgumentException("테이블에 명함이 없습니다")));
     }
 
-}
+    @Transactional
+    public List<Long> registered(RegisteredDto registeredDto) {
+        Long userId = registeredDto.getUserId();
+        User user = userRepository.findById(userId)
+                                  .orElseThrow(() -> new IllegalArgumentException("테이블에 유저가 없습니다"));
 
+        List<Optional<BusinessCard>> cards = registeredDto.getIds()
+                                                          .stream()
+                                                          .map(aLong -> businessCardRepository.findById(user.getId()))
+                                                          .collect(Collectors.toList());
+       return cards.stream()
+             .map(businessCard -> businessCard.orElseThrow(() -> new IllegalArgumentException("테이블에 명함이 존재하지않습니다")))
+             .map(businessCard -> UserCardInfo.builder()
+                                              .businessCard(businessCard)
+                                              .user(user)
+                                              .build())
+             .map(UserCardInfo::getId)
+             .collect(Collectors.toList());
+
+    }
+}
