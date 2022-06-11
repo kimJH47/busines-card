@@ -86,6 +86,7 @@ public class BusinessCardService {
         List<BusinessCard> businessCards = customBusinessCardRepository.findBusinessCards(businessCardSearch);
         return businessCards.stream()
                             .map(businessCard -> BusinessCardRequest.builder()
+                                                                    .id(businessCard.getId())
                                                                     .company(businessCard.getCompany())
                                                                     .name(businessCard.getName())
                                                                     .role(businessCard.getRole())
@@ -97,7 +98,6 @@ public class BusinessCardService {
                             .collect(Collectors.toList());
 
     }
-
     @Transactional(readOnly = true)
     public BusinessCardRequest findById(Long id) {
         return new BusinessCardRequest(businessCardRepository.findById(id)

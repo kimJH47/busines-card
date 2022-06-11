@@ -6,17 +6,12 @@ import businessCard.core.respository.BusinessCardSearch;
 import businessCard.core.service.BusinessCardService;
 import businessCard.core.service.UserService;
 import businessCard.core.web.dto.BusinessCardRequest;
-import businessCard.core.web.dto.UserRequest;
-import com.sun.net.httpserver.HttpsServer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -55,12 +50,8 @@ public class IndexController {
     }
 
     @GetMapping("/business-card/find")
-    public String findForm(@RequestParam(value = "businessCardSearch",required = false) Map<String,Object> objectMap, Model model) {
-        if(objectMap!=null) {
-            BusinessCardSearch businessCardSearch = (BusinessCardSearch) objectMap.get("businessCardSearch");
-            model.addAttribute("businessCards", businessCardService.findBusinessCards(businessCardSearch));
-        }
-        return "/business-cardList";
+    public String findForm() {
+        return "business-card-list";
     }
 
     @GetMapping("/business-card/update/{id}")

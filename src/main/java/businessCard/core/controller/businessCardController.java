@@ -7,8 +7,10 @@ import businessCard.core.web.dto.BusinessCardRequest;
 import businessCard.core.web.dto.BusinessCardSaveDto;
 import businessCard.core.web.dto.BusinessCardUpdateDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.spring5.webflow.view.AjaxThymeleafViewResolver;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -38,13 +40,12 @@ public class businessCardController {
         return id;
     }
 
-    @GetMapping("/api/business-card/find")
-    public ResponseEntity<?> findAllDesc(@RequestBody BusinessCardSearch businessCardSearch) {
+    @PostMapping(value = "/api/business-card/find", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> findCards(@RequestBody BusinessCardSearch businessCardSearch) {
         List<BusinessCardRequest> businessCards = businessCardService.findBusinessCards(businessCardSearch);
         for (BusinessCardRequest businessCard : businessCards) {
-            System.out.println("businessCard.getName() = " + businessCard.getName());
+            System.out.println("businessCard = " + businessCard.getId());
         }
-        return ResponseEntity.ok()
-                             .body(businessCards);
+        return ResponseEntity.ok().body(businessCards);
     }
 }

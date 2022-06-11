@@ -19,6 +19,7 @@
                     </select>
                 </div>
                 <button type="button" class="btn btn-primary mb-2" id="btn-find">검색</button>
+                <button type="button" class="btn btn-primary mb-2" id="btn-register">register</button>
             </form>
         </div>
         <table class="table table-striped" id ="result">
@@ -34,31 +35,21 @@
                 <th></th>
             </tr>
             </thead>
-            <tbody>
-            <tr th:each="item : ${businessCards}">
-                <td th:text="${item.id}"></td>
-                <td th:text="${item.company}"></td>
-                <td th:text="${item.name}"></td>
-                <td th:text="${item.role}"></td>
-                <td th:text="${item.tel}"></td>
-                <td th:text="${item.email}"></td>
-                <td th:text="${item.uploadTime}"></td>
+            <tbody id="tbr">
+            <tr id="irr">
+<!--                <td th:text="${item.id}"></td>-->
+<!--                <td th:text="${item.company}"></td>-->
+<!--                <td th:text="${item.name}"></td>-->
+<!--                <td th:text="${item.role}"></td>-->
+<!--                <td th:text="${item.tel}"></td>-->
+<!--                <td th:text="${item.email}"></td>-->
+<!--                <td th:text="${item.uploadTime}"></td>-->
             </tr>
             </tbody>
         </table>
     </div>
     <div th:replace="fragments/footer :: footer"/>
 </div>
-<!-- /container -->
 </body>
 <script src="/js/app/index.js"></script>
-<!--<script>-->
-<!--    function cancel(id) {-->
-<!--        var form = document.createElement("form");-->
-<!--        form.setAttribute("method", "post");-->
-<!--        form.setAttribute("action", "/orders/" + id + "/cancel");-->
-<!--        document.body.appendChild(form);-->
-<!--        form.submit();-->
-<!--    }-->
-<!--</script>-->
 </html>

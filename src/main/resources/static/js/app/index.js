@@ -16,57 +16,72 @@ const main = {
         $('#btn-find').on('click', function () {
             _this.find();
         });
+        $('#btn-register').on('click', function () {
+            _this.registry();
+        });
+
+    },
+    registry: function (){
 
     },
     find: function () {
-        console.log("검색시작!~~");
-        const type = $("#search option:selected").val();
-        console.log(type);
-        console.log($('#content').val());
-        let data;
-        switch (type) {
-            case "name":
-                data = {
-                    name: $('#content').val(),
-                    company: null,
-                    tel: null,
-                    email: null
-                };
-            case "company":
-                data = {
-                    name: null,
-                    company: $('#content').val(),
-                    tel: null,
-                    email: null
-                };
-            case "tel":
-                data = {
-                    name: null,
-                    company: null,
-                    tel: $('#content').val(),
-                    email: null
-                };
-            case "email":
-                data = {
-                    name: null,
-                    company: null,
-                    tel: null,
-                    email: $('#content').val()
-                };
-
+        var type = $('#search option:selected').val();
+        let data = {
+            name: '123',
+            company: null,
+            tel: null,
+            email: null
+        };
+        if (type == 'name') {
+            data = {
+                name: $('#content').val(),
+                company: null,
+                tel: null,
+                email: null
+            };
+        } else if (type == 'company') {
+            data = {
+                name: null,
+                company: $('#content').val(),
+                tel: null,
+                email: null
+            };
+        } else if (type == 'tel') {
+            data = {
+                name: null,
+                company: null,
+                tel: $('#content').val(),
+                email: null
+            };
+        } else if (type == 'email') {
+            data = {
+                name: null,
+                company: null,
+                tel: null,
+                email: $('#content').val()
+            };
         }
-        console.log(data);
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             url: '/api/business-card/find',
-            dataType: 'json',
+            data: JSON.stringify(data),
             contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(data)
-        }).done(function (data){
-            alert(data);
+        }).done(function (data) {
+            console.log(JSON.stringify(data))
+            var tblresult = data;
+            var str = "";
+            $("tr:has(td)").remove();
+            $.each(tblresult, function (i) {
+                str += "<TR>"
+                str += '<TD id="id">' + tblresult[i].id + '</TD><TD id="company">' + tblresult[i].company + '</TD><TD id="name">' + tblresult[i].name + '</TD><TD id="role">' +tblresult[i].role + '</TD><TD id="tel">'
+                +tblresult[i].tel + '</TD><TD id="email">' +tblresult[i].email + '</TD>' + tblresult[i].upload + '</TD><TD>'
+                str += '</TR>'
+            });
+            $("#result").append(str);
         }).fail(function (error) {
             alert(JSON.stringify(error));
         })
+
     },
     save: function () {
         const data = {
