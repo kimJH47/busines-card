@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -115,23 +116,23 @@ public class BusinessCardService {
     }
 
     @Transactional
-    public List<Long> registered(RegisteredDto registeredDto) {
-        Long userId = registeredDto.getUserId();
-        User user = userRepository.findById(userId)
+    public List<Long> registered(Long id,RegisteredDto registeredDto) {
+        User user = userRepository.findById(id)
                                   .orElseThrow(() -> new IllegalArgumentException("테이블에 유저가 없습니다"));
 
         List<Optional<BusinessCard>> cards = registeredDto.getIds()
                                                           .stream()
                                                           .map(aLong -> businessCardRepository.findById(user.getId()))
                                                           .collect(Collectors.toList());
-       return cards.stream()
-             .map(businessCard -> businessCard.orElseThrow(() -> new IllegalArgumentException("테이블에 명함이 존재하지않습니다")))
-             .map(businessCard -> UserCardInfo.builder()
-                                              .businessCard(businessCard)
-                                              .user(user)
-                                              .build())
-             .map(UserCardInfo::getId)
-             .collect(Collectors.toList());
+        return cards.stream()
+                    .map(businessCard -> businessCard.orElseThrow(() -> new IllegalArgumentException("테이블에 명함이 존재하지않습니다")))
+                    .map(businessCard -> userCardInfoRepository.save(UserCardInfo.builder()
+                                                                                 .businessCard(businessCard)
+                                                                                 .user(user)
+                                                                                 .build()))
+                    .map(userCardInfo -> userCardInfo.getId())
+                    .collect(Collectors.toList());
+
 
     }
 }

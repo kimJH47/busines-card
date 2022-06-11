@@ -43,16 +43,14 @@ public class businessCardController {
     @PostMapping(value = "/api/business-card/find", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> findCards(@RequestBody BusinessCardSearch businessCardSearch) {
         List<BusinessCardRequest> businessCards = businessCardService.findBusinessCards(businessCardSearch);
-        for (BusinessCardRequest businessCard : businessCards) {
-            System.out.println("businessCard = " + businessCard.getId());
-        }
         return ResponseEntity.ok().body(businessCards);
     }
 
     @PostMapping("/api/business-card/register")
-    public ResponseEntity<?> registeredCards(@RequestBody RegisteredDto regestedDto) {
-        businessCardService.registered(regestedDto);
-        return null;
+    public ResponseEntity<?> registeredCards(@RequestBody RegisteredDto regestedDto,HttpSession httpSession) {
+        Long userId =(Long) httpSession.getAttribute("userId");
+        return ResponseEntity.ok()
+                             .body(businessCardService.registered(userId, regestedDto));
     }
 
 }
