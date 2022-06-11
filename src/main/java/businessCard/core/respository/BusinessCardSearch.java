@@ -9,8 +9,9 @@ import lombok.Setter;
 public class BusinessCardSearch {
 
     private String name;
-    private String tell;
     private String company;
+    private String tel;
     private String email;
+
 
 }

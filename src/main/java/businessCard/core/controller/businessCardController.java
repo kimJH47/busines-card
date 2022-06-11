@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -21,13 +22,14 @@ public class businessCardController {
 
     //명함저장 Api, 유저ID는 Dto에 포함
     @PostMapping("/api/business-card")
-    public Long save(@RequestBody BusinessCardSaveDto businessCardSaveDto) {
-        return businessCardService.save(businessCardSaveDto);
+    public Long save(@RequestBody BusinessCardSaveDto businessCardSaveDto, HttpSession httpSession) {
+        Long userId =(Long) httpSession.getAttribute("userId");
+        return businessCardService.save(businessCardSaveDto,userId);
     }
 
     @PutMapping("/api/business-card/{id}")
-    public void update(@PathVariable Long id, @RequestBody BusinessCardUpdateDto requestDto) {
-        businessCardService.update(id, requestDto);
+    public Long update(@PathVariable Long id, @RequestBody BusinessCardUpdateDto requestDto) {
+        return businessCardService.update(id, requestDto);
     }
 
     @DeleteMapping("/api/business-card/{id}")
@@ -36,9 +38,12 @@ public class businessCardController {
         return id;
     }
 
-    @GetMapping("/api/business-card")
+    @GetMapping("/api/business-card/find")
     public ResponseEntity<?> findAllDesc(@RequestBody BusinessCardSearch businessCardSearch) {
         List<BusinessCardRequest> businessCards = businessCardService.findBusinessCards(businessCardSearch);
+        for (BusinessCardRequest businessCard : businessCards) {
+            System.out.println("businessCard.getName() = " + businessCard.getName());
+        }
         return ResponseEntity.ok()
                              .body(businessCards);
     }

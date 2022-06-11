@@ -15,11 +15,11 @@ public class BusinessCard extends BaseTimeEntity {
 
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "business_card_id")
     private Long id;
     private String name;
-    private String tell;
+    private String tel;
     private String role;
     private String company;
     private String email;
@@ -35,9 +35,9 @@ public class BusinessCard extends BaseTimeEntity {
 
     public void update(BusinessCardUpdateDto businessCardUpdateDto) {
         this.name = businessCardUpdateDto.getName();
-        this.tell = businessCardUpdateDto.getTell();
-        this.role = businessCardUpdateDto.getRole();
         this.company = businessCardUpdateDto.getCompany();
+        this.role = businessCardUpdateDto.getRole();
+        this.tel = businessCardUpdateDto.getTel();
         this.email = businessCardUpdateDto.getEmail();
 
     }

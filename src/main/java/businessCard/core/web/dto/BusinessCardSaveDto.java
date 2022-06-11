@@ -16,8 +16,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class BusinessCardSaveDto {
 
-    @NotNull
-    private Long userId;
     private String company;
     private String name;
     private String tell;
@@ -31,7 +29,7 @@ public class BusinessCardSaveDto {
                            .email(this.getEmail())
                            .name(this.getName())
                            .role(this.getRole())
-                           .tell(this.getTell())
+                           .tel(this.getTell())
                            .build();
     }
 }

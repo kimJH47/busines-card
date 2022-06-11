@@ -2,18 +2,22 @@ package businessCard.core.controller;
 
 import businessCard.core.config.oauth.LoginUser;
 import businessCard.core.config.oauth.dto.SessionUser;
+import businessCard.core.respository.BusinessCardSearch;
 import businessCard.core.service.BusinessCardService;
 import businessCard.core.service.UserService;
+import businessCard.core.web.dto.BusinessCardRequest;
 import businessCard.core.web.dto.UserRequest;
 import com.sun.net.httpserver.HttpsServer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,7 +31,6 @@ public class IndexController {
     //main page
     public String main(Model model, @LoginUser SessionUser user) {
 
-        model.addAttribute("posts", businessCardService.findAllDesc());
 
         /**
          * CustomOAuth2Service 에서 로그인 성공시 세션을 SessionUser 클래스에 저장
@@ -38,13 +41,32 @@ public class IndexController {
          * 로그인 성공시에만 userName 등록
          */
         if (user != null) {
+            model.addAttribute("business-card", businessCardService.findByUserIdAllDesc(user.getId()));
             model.addAttribute("userName", user.getName());
+            return "index";
         }
+        model.addAttribute("business-card", new ArrayList<BusinessCardRequest>());
         return "index";
     }
+
     @GetMapping("/business-card/save")
     public String saveForm() {
-
         return "business-card";
+    }
+
+    @GetMapping("/business-card/find")
+    public String findForm(@RequestParam(value = "businessCardSearch",required = false) Map<String,Object> objectMap, Model model) {
+        if(objectMap!=null) {
+            BusinessCardSearch businessCardSearch = (BusinessCardSearch) objectMap.get("businessCardSearch");
+            model.addAttribute("businessCards", businessCardService.findBusinessCards(businessCardSearch));
+        }
+        return "/business-cardList";
+    }
+
+    @GetMapping("/business-card/update/{id}")
+    public String updateForm(@PathVariable Long id, Model model) {
+        model.addAttribute("business-card", businessCardService.findById(id));
+        return "business-card-update";
+
     }
 }

@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <div>
+            <form  class="form-inline">
+                <div class="form-group mb-2">
+                    <input type="text" class="form-control" id="content"/>
+                </div>
+                <div class="form-group mx-sm-1 mb-2">
+                    <select name="searchType" id="search">
+                        <option value="company" id="company">회사</option>
+                        <option value="name" id="name">성함</option>
+                        <option value="tel" id="tel">전화번호</option>
+                        <option value="email" id="email">이메일</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary mb-2" id="btn-find">검색</button>
+            </form>
+        </div>
+        <table class="table table-striped" id ="result">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>회사명</th>
+                <th>성함</th>
+                <th>직함</th>
+                <th>TEL</th>
+                <th>Email</th>
+                <th>마지막 등록일</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${businessCards}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.company}"></td>
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.role}"></td>
+                <td th:text="${item.tel}"></td>
+                <td th:text="${item.email}"></td>
+                <td th:text="${item.uploadTime}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div>
+<!-- /container -->
+</body>
+<script src="/js/app/index.js"></script>
+<!--<script>-->
+<!--    function cancel(id) {-->
+<!--        var form = document.createElement("form");-->
+<!--        form.setAttribute("method", "post");-->
+<!--        form.setAttribute("action", "/orders/" + id + "/cancel");-->
+<!--        document.body.appendChild(form);-->
+<!--        form.submit();-->
+<!--    }-->
+<!--</script>-->
+</html>

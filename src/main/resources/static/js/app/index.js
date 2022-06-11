@@ -1,5 +1,6 @@
 const main = {
     init: function () {
+
         const _this = this;
         $('#btn-save').on('click', function () {
             _this.save();
@@ -12,13 +13,63 @@ const main = {
         $('#btn-delete').on('click', function () {
             _this.delete();
         });
+        $('#btn-find').on('click', function () {
+            _this.find();
+        });
 
     },
+    find: function () {
+        console.log("검색시작!~~");
+        const type = $("#search option:selected").val();
+        console.log(type);
+        console.log($('#content').val());
+        let data;
+        switch (type) {
+            case "name":
+                data = {
+                    name: $('#content').val(),
+                    company: null,
+                    tel: null,
+                    email: null
+                };
+            case "company":
+                data = {
+                    name: null,
+                    company: $('#content').val(),
+                    tel: null,
+                    email: null
+                };
+            case "tel":
+                data = {
+                    name: null,
+                    company: null,
+                    tel: $('#content').val(),
+                    email: null
+                };
+            case "email":
+                data = {
+                    name: null,
+                    company: null,
+                    tel: null,
+                    email: $('#content').val()
+                };
+
+        }
+        console.log(data);
+        $.ajax({
+            type: 'GET',
+            url: '/api/business-card/find',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (data){
+            alert(data);
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        })
+    },
     save: function () {
-        const userId = $(userId);
-        console.log(userId);
         const data = {
-            userId: userId,
             company: $('#company').val(),
             name: $('#name').val(),
             tell: $('#tell').val(),
@@ -41,8 +92,11 @@ const main = {
     },
     update: function () {
         const data = {
-            title: $('#title').val(),
-            content: $('#content').val()
+            name: $('#name').val(),
+            company: $('#company').val(),
+            role: $('#role').val(),
+            tel: $('#tel').val(),
+            email: $('#email').val(),
         };
 
         const id = $('#id').val();

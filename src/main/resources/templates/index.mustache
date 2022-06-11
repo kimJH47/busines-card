@@ -3,15 +3,16 @@
 <div class="col-md-12">
     <div class="row">
         <div class="col-md-6">
-            {{#userId}}<a href="/business-card/save" role="button" class="btn btn-primary">명함 등록{{userId}}</a>{{/userId}}
+            <a href="/business-card/save" role="button" class="btn btn-primary">명함 등록</a>
+            <a href="/business-card/find" role="button" class="btn btn-primary">명함 찾기</a>
             {{#userName}}
                 Logged in as: <span id="user">{{userName}}</span>
                 <a href="/logout" class="btn btn-info active" role="button">Logout</a>
             {{/userName}}
             {{^userName}}
                 <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
-                <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
-                <a href="/oauth2/authorization/kakao" class="btn btn-third active" role="button">Kakao Login</a>
+<!--                <a href="/oauth2/authorization/naver" class="btn btn-success active" role="button">Naver Login</a>-->
+                <a href="/oauth2/authorization/kakao" class="btn btn-success active" role="button">Kakao Login</a>
             {{/userName}}
         </div>
     </div>
@@ -20,22 +21,27 @@
     <table class="table table-horizontal table-bordered">
         <thead class="thead-strong">
         <tr>
+            <th>ID</th>
             <th>회사명</th>
             <th>이름</th>
             <th>직책</th>
             <th>TEL</th>
             <th>이메일</th>
+            <th>마지막수정일</th>
         </tr>
         </thead>
         <tbody id="tbody">
-        {{#posts}}
+        {{#business-card}}
             <tr>
                 <td>{{id}}</td>
-                <td><a href="/posts/update/{{id}}">{{title}}</a></td>
-                <td>{{author}}</td>
-                <td>{{modifiedDate}}</td>
+                <td>{{company}}</td>
+                <td><a href="/business-card/update/{{id}}">{{name}}</a></td>
+                <td>{{role}}</td>
+                <td>{{tel}}</td>
+                <td>{{email}}</td>
+                <td>{{uploadTime}}</td>
             </tr>
-        {{/posts}}
+        {{/business-card}}
         </tbody>
     </table>
 </div>
