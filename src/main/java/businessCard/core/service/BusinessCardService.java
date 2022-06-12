@@ -92,9 +92,12 @@ public class BusinessCardService {
 
     }
     @Transactional(readOnly = true)
-    public List<BusinessCardRequest> findBusinessCards(BusinessCardSearch businessCardSearch) {
+    public List<BusinessCardRequest> findBusinessCards(Long userId, BusinessCardSearch businessCardSearch) {
 
-        List<BusinessCard> businessCards = customBusinessCardRepository.findBusinessCards(businessCardSearch);
+        User user = userRepository.findById(userId)
+                                  .orElseThrow(() -> new IllegalArgumentException("테이블에 유저가 없습니다"));
+
+        List<BusinessCard> businessCards = customBusinessCardRepository.findBusinessCards(businessCardSearch,user);
         return businessCards.stream()
                             .map(businessCard -> BusinessCardRequest.builder()
                                                                     .id(businessCard.getId())

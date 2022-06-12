@@ -41,8 +41,9 @@ public class businessCardController {
     }
 
     @PostMapping(value = "/api/business-card/find", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> findCards(@RequestBody BusinessCardSearch businessCardSearch) {
-        List<BusinessCardRequest> businessCards = businessCardService.findBusinessCards(businessCardSearch);
+    public ResponseEntity<?> findCards(@RequestBody BusinessCardSearch businessCardSearch, HttpSession httpSession) {
+        Long userId =(Long)httpSession.getAttribute("userId");
+        List<BusinessCardRequest> businessCards = businessCardService.findBusinessCards(userId,businessCardSearch);
         return ResponseEntity.ok().body(businessCards);
     }
 

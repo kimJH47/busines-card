@@ -1,6 +1,7 @@
 package businessCard.core.respository;
 
 import businessCard.core.domain.BusinessCard;
+import businessCard.core.domain.User;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +17,10 @@ public class CustomBusinessCardRepositoryImpl implements CustomBusinessCardRepos
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<BusinessCard> findBusinessCards(BusinessCardSearch businessCardSearch) {
+    public List<BusinessCard> findBusinessCards(BusinessCardSearch businessCardSearch, User user) {
+
         return jpaQueryFactory.selectFrom(businessCard)
-                              .where(nameEq(businessCardSearch.getName()), emailEq(businessCardSearch.getEmail()), companyEq(businessCardSearch.getCompany()),telEq(businessCardSearch.getTel()))
+                              .where(businessCard.user.ne(user),nameEq(businessCardSearch.getName()), emailEq(businessCardSearch.getEmail()), companyEq(businessCardSearch.getCompany()))
                               .limit(100)
                               .fetch();
     }
