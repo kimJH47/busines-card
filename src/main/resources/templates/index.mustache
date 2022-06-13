@@ -1,5 +1,5 @@
 {{>layout/header}}
-    <h1>심플 명함관리 서비스</h1>
+<h1>심플 명함관리 서비스</h1>
 <div class="col-md-12">
     <div class="row">
         <div class="col-md-6">
@@ -11,14 +11,14 @@
             {{/userName}}
             {{^userName}}
                 <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
-<!--                <a href="/oauth2/authorization/naver" class="btn btn-success active" role="button">Naver Login</a>-->
+                <!--                <a href="/oauth2/authorization/naver" class="btn btn-success active" role="button">Naver Login</a>-->
                 <a href="/oauth2/authorization/kakao" class="btn btn-success active" role="button">Kakao Login</a>
             {{/userName}}
         </div>
     </div>
     <br>
     <!-- 목록 출력 영역 -->
-    <table class="table table-horizontal table-bordered">
+    <table class="table table-horizontal table-bordered" id="result">
         <thead class="thead-strong">
         <tr>
             <th>ID</th>
@@ -28,22 +28,63 @@
             <th>TEL</th>
             <th>이메일</th>
             <th>마지막수정일</th>
+            <th>수정하기</th>
         </tr>
         </thead>
         <tbody id="tbody">
-        {{#business-card}}
-            <tr>
-                <td>{{id}}</td>
-                <td>{{company}}</td>
-                <td><a href="/business-card/update/{{id}}">{{name}}</a></td>
-                <td>{{role}}</td>
-                <td>{{tel}}</td>
-                <td>{{email}}</td>
-                <td>{{uploadTime}}</td>
-            </tr>
-        {{/business-card}}
+        <tr>
+        </tr>
         </tbody>
     </table>
+    {{#userEmail}}
+        <input type="hidden" id="email" value="{{userEmail}}"/>
+        {{#userId}}
+            <input type="hidden" id="userId" value="{{userId}}"/>
+            <script>
+
+                //reload();
+                document.addEventListener("DOMContentLoaded", function () {
+
+
+                    let email = document.getElementById("email").value;
+                    const id = document.getElementById("userId").value;
+
+                    $(document).on("click", "#update", function(){
+                        var id = $(this).parent().parent().find("td:eq(0)").text();
+                        location.href="/business-card/update/" + id;
+                    });
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '/api/business-card/' + id,
+                        contentType: 'application/json; charset=utf-8',
+                    }).done(function (data) {
+                        console.log(JSON.stringify(data))
+                        let tblresult = data;
+                        let str = "";
+                        $("tr:has(td)").remove();
+                        $.each(tblresult, function (i) {
+                            let userEmail = tblresult[i].userEmail;
+                            str += "<TR>"
+                            str += '<TD id="id">' + tblresult[i].id + '</TD>'
+                            str += '<TD id="company">' + tblresult[i].company + '</TD><TD id="name">' + tblresult[i].name + '</TD><TD id="role">' + tblresult[i].role + '</TD><TD id="tel">'
+                                    + tblresult[i].tel + '</TD><TD id="email">' + tblresult[i].email + '</TD>' + '</TD><TD id="uploadTime">' + tblresult[i].uploadTime + '</TD>'
+                            if (userEmail === email) {
+                                str += '<TD id="id"><button type="button" class="btn btn-primary" id = "update" >수정</button></TD>'
+                            }
+                            str += '</TR>'
+                        });
+                        $("#result").append(str);
+
+                    }).fail(function (error) {
+                        alert(JSON.stringify(error));
+                    })
+
+
+                });
+            </script>
+        {{/userId}}
+    {{/userEmail}}
 </div>
 {{>layout/footer}}
 

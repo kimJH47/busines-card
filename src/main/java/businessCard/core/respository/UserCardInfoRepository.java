@@ -11,6 +11,11 @@ import java.util.List;
 
 public interface UserCardInfoRepository extends JpaRepository<UserCardInfo, Long> {
 
-    @Query("select uc from UserCardInfo uc join fetch uc.user where uc.user =:user ")
+    @Query("select uc from UserCardInfo uc join fetch uc.user where uc.user =:user")
     List<UserCardInfo> findByUser(@Param("user") User user);
+
+
+    @Query("select uc from UserCardInfo uc join fetch uc.businessCard where uc.businessCard =:businessCard")
+    List<UserCardInfo> findByBusinessCard(@Param("businessCard")BusinessCard businessCard);
+
 }

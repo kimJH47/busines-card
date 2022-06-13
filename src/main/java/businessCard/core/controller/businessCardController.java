@@ -40,6 +40,11 @@ public class businessCardController {
         return id;
     }
 
+    @GetMapping(value = "/api/business-card/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> findCardByUserId(@PathVariable("id") Long id) {
+        return ResponseEntity.ok()
+                             .body(businessCardService.findByUserIdAllDesc(id));
+    }
     @PostMapping(value = "/api/business-card/find", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> findCards(@RequestBody BusinessCardSearch businessCardSearch, HttpSession httpSession) {
         Long userId =(Long)httpSession.getAttribute("userId");

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -36,8 +37,9 @@ public class IndexController {
          * 로그인 성공시에만 userName 등록
          */
         if (user != null) {
-            model.addAttribute("business-card", businessCardService.findByUserIdAllDesc(user.getId()));
+            //model.addAttribute("business-card", businessCardService.findByUserIdAllDesc(user.getId()));
             model.addAttribute("userName", user.getName());
+            model.addAttribute("userEmail", user.getEmail());
             return "index";
         }
         model.addAttribute("business-card", new ArrayList<BusinessCardRequest>());
@@ -53,7 +55,6 @@ public class IndexController {
     public String findForm() {
         return "business-card-list";
     }
-
     @GetMapping("/business-card/update/{id}")
     public String updateForm(@PathVariable Long id, Model model) {
         model.addAttribute("business-card", businessCardService.findById(id));

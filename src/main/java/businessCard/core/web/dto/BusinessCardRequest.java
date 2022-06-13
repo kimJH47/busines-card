@@ -24,7 +24,20 @@ public class BusinessCardRequest {
     @JsonSerialize(using = ToStringSerializer.class)
     private LocalDateTime uploadTime;
     private String image;
+    private String userEmail;
 
+
+    public BusinessCardRequest(String email, BusinessCard businessCard) {
+        this.id = businessCard.getId();
+        this.company = businessCard.getCompany();
+        this.name = businessCard.getName();
+        this.tel = businessCard.getTel();
+        this.role = businessCard.getRole();
+        this.email = businessCard.getEmail();
+        this.uploadTime = businessCard.getModifiedTime();
+        this.image = businessCard.getImage();
+        this.userEmail =email;
+    }
     public BusinessCardRequest(BusinessCard businessCard) {
         this.id = businessCard.getId();
         this.company = businessCard.getCompany();
@@ -35,5 +48,4 @@ public class BusinessCardRequest {
         this.uploadTime = businessCard.getModifiedTime();
         this.image = businessCard.getImage();
     }
-
 }

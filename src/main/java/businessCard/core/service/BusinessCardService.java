@@ -38,7 +38,9 @@ public class BusinessCardService {
         return userCardInfoRepository.save(UserCardInfo.builder()
                                                        .businessCard(card)
                                                        .user(user)
-                                                       .build()).getId();
+                                                       .userEmail(user.getEmail())
+                                                       .build())
+                                     .getId();
 
     }
 
@@ -55,6 +57,9 @@ public class BusinessCardService {
     public void delete(Long id) {
         BusinessCard businessCard = businessCardRepository.findById(id)
                                                           .orElseThrow(() -> new IllegalArgumentException("테이블에 명함이 없습니다"));
+        userCardInfoRepository.findByBusinessCard(businessCard)
+                              .stream()
+                              .forEach(userCardInfo -> userCardInfoRepository.delete(userCardInfo));
         businessCardRepository.delete(businessCard);
 
     }
@@ -82,12 +87,10 @@ public class BusinessCardService {
         User user = userRepository.findById(id)
                                   .orElseThrow(() -> new IllegalArgumentException("유저가 테이블에 존재하지 않습니다"));
         List<UserCardInfo> finds = userCardInfoRepository.findByUser(user);
+        String email = user.getEmail();
         List<BusinessCardRequest> cardRequests = finds.stream()
-                                                 .map(
-                                                         userCardInfo -> new BusinessCardRequest(userCardInfo.getBusinessCard())
-                                                 )
-                                                 .collect(Collectors.toList());
-
+                                                      .map(userCardInfo -> new BusinessCardRequest(userCardInfo.getUserEmail(),userCardInfo.getBusinessCard()))
+                                                      .collect(Collectors.toList());
         return cardRequests;
 
     }
@@ -120,12 +123,15 @@ public class BusinessCardService {
 
     @Transactional
     public List<Long> registered(Long id,RegisteredDto registeredDto) {
+
+        //등록할려는 유저
         User user = userRepository.findById(id)
                                   .orElseThrow(() -> new IllegalArgumentException("테이블에 유저가 없습니다"));
 
+
         List<Optional<BusinessCard>> cards = registeredDto.getIds()
                                                           .stream()
-                                                          .map(aLong -> businessCardRepository.findById(user.getId()))
+                                                          .map(businessCardRepository::findById)
                                                           .collect(Collectors.toList());
         return cards.stream()
                     .map(businessCard -> businessCard.orElseThrow(() -> new IllegalArgumentException("테이블에 명함이 존재하지않습니다")))

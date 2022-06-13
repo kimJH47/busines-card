@@ -24,6 +24,8 @@ public class UserCardInfo extends BaseTimeEntity{
     @JoinColumn(name = "business_card_id")
     private BusinessCard businessCard;
 
+    private String userEmail;
+
     public void changeUser(User user) {
         this.user = user;
     }

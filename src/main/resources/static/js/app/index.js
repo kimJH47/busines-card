@@ -19,7 +19,16 @@ const main = {
         $('#btn-register').on('click', function () {
             _this.registry();
         });
+        $('#btn-reload').on('click', function () {
+            _this.reload();
+        });
 
+    },
+    reload: function (){
+        console.log("run");
+        var p2 = $(this).parent().parent();
+        var id = p2.find("td:eq(1)").text();
+        console.log("id : "+id);
     },
     registry: function () {
         var search = [];
@@ -32,18 +41,8 @@ const main = {
                 const id =p2.find("td:eq(1)").text();
                 console.log(id);
                 search.push(id);
-                // $(p2).find("td").each(function(i, item){ //tr 행의 td를 찾으면서 값 확인
-                //     console.log("i:"+i+"item:"+ $.trim($(item).html())); //html 코드 추출
-                //     console.log("i:"+i+"item:"+ $.trim($(item).text())); //text 값 추출
-                //
-                // });
             });
         }
-        // $('input[name="check"]:checked').each(function(i){//체크된 리스트 저장
-        //     search.push($(this).parent().parent().children().eq(1).id);
-        // });
-        //
-        //
         console.log(search);
         const data = {
             userId: null,
@@ -114,7 +113,6 @@ const main = {
                 str += "<TR>"
                 str += '<TD id="ch"><input id="checkBox" type="checkbox" name="check"/></TD>' + '<TD id="id">' + tblresult[i].id + '</TD>' + '<TD id="company">' + tblresult[i].company + '</TD><TD id="name">' + tblresult[i].name + '</TD><TD id="role">' + tblresult[i].role + '</TD><TD id="tel">'
                     + tblresult[i].tel + '</TD><TD id="email">' + tblresult[i].email + '</TD>'
-
                 str += '</TR>'
             });
             $("#result").append(str);
@@ -171,7 +169,6 @@ const main = {
     },
     delete: function () {
         const id = $('#id').val();
-
         $.ajax({
             type: 'DELETE',
             url: '/api/business-card/' + id,
