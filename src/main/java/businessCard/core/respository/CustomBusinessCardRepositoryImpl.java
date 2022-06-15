@@ -20,7 +20,7 @@ public class CustomBusinessCardRepositoryImpl implements CustomBusinessCardRepos
     public List<BusinessCard> findBusinessCards(BusinessCardSearch businessCardSearch, User user) {
 
         return jpaQueryFactory.selectFrom(businessCard)
-                              .where(businessCard.user.ne(user),nameEq(businessCardSearch.getName()), emailEq(businessCardSearch.getEmail()), companyEq(businessCardSearch.getCompany()))
+                              .where(businessCard.user.ne(user), telEq(businessCardSearch.getTel()), nameEq(businessCardSearch.getName()), emailEq(businessCardSearch.getEmail()), companyEq(businessCardSearch.getCompany()))
                               .limit(100)
                               .fetch();
     }

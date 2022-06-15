@@ -26,7 +26,6 @@ public class BusinessCardRequest {
     private String image;
     private String userEmail;
 
-
     public BusinessCardRequest(String email, BusinessCard businessCard) {
         this.id = businessCard.getId();
         this.company = businessCard.getCompany();

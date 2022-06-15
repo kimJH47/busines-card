@@ -108,6 +108,7 @@ const main = {
             console.log(JSON.stringify(data))
             var tblresult = data;
             var str = "";
+            $('#content').val('');
             $("tr:has(td)").remove();
             $.each(tblresult, function (i) {
                 str += "<TR>"

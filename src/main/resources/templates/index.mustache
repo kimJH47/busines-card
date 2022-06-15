@@ -11,7 +11,6 @@
             {{/userName}}
             {{^userName}}
                 <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
-                <!--                <a href="/oauth2/authorization/naver" class="btn btn-success active" role="button">Naver Login</a>-->
                 <a href="/oauth2/authorization/kakao" class="btn btn-success active" role="button">Kakao Login</a>
             {{/userName}}
         </div>
@@ -42,9 +41,7 @@
             <input type="hidden" id="userId" value="{{userId}}"/>
             <script>
 
-                //reload();
                 document.addEventListener("DOMContentLoaded", function () {
-
 
                     let email = document.getElementById("email").value;
                     const id = document.getElementById("userId").value;
@@ -75,12 +72,9 @@
                             str += '</TR>'
                         });
                         $("#result").append(str);
-
                     }).fail(function (error) {
                         alert(JSON.stringify(error));
                     })
-
-
                 });
             </script>
         {{/userId}}
